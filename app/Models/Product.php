@@ -11,4 +11,16 @@ class Product extends Model
     protected $fillable = ['name', 'price'];
     // public $timestamps = false;
 
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+
+    public function imgs()
+    {
+        return $this->hasMany(ProductImg::class);
+    }
+
 }

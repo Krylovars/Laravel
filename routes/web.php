@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', function () {
     return view('home');
 })->name('home');
-
 
 Route::get('login', [\App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login_process', [\App\Http\Controllers\AuthController::class, 'login'])->name('login_process');
@@ -25,3 +23,17 @@ Route::get('register', [\App\Http\Controllers\AuthController::class, 'showRegist
 Route::post('register_process', [\App\Http\Controllers\AuthController::class, 'register'])->name('register_process');
 
 Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+
+
+Route::group(['middleware' => ['auth', 'isadmin'], 'prefix' => 'admin', 'as' => 'admin.'], function()
+{
+    Route::get('/', function () {
+        return view('admin_home');
+    })->name('home');
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+});
+
+
+
+
